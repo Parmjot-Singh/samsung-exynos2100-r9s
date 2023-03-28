@@ -1,0 +1,50 @@
+include:
+  - https://gitlab.com/ubports/porting/community-ports/halium-generic-adaptation-build-tools/-/raw/halium-12/gsi-port-ci.yml
+
+variables:
+  BUILD_DEVEL_FLASHABLE_FOCAL: 1
+
+# create fastboot flashable super.img
+devel-bootloader-flashable:
+  stage: deploy
+  needs: [ "devel-flashable" ]
+  script: |
+    set -e
+
+    apt update
+    apt install -y \
+      build-essential clang git img2simg jq sudo unzip wget xz-utils zlib1g-dev
+
+    # Parallelize getting dependencies
+    (
+      git clone --depth=1 https://github.com/LonelyFool/lpunpack_and_lpmake.git
+      cd lpunpack_and_lpmake && ./make.sh
+    ) &
+    (
+      wget --no-verbose https://volla.tech/filedump/ubuntu-touch-mimameid-firmware-r.tar.xz
+      tar xvJf ubuntu-touch-mimameid-firmware-r.tar.xz
+    ) &
+    # Use wait -n so that errors are propagated.
+    wait -n
+    wait -n
+
+    ./lpunpack_and_lpmake/bin/lpmake \
+      --metadata-size 65536 --metadata-slots 2 \
+      --sparse --super-name super \
+      --device super:8589934592 --group ubuntu:8585740288 \
+      --partition system_a:none:7780433920:ubuntu \
+      --partition vendor_a:none:805306368:ubuntu \
+      --image 'system_a=out/ubuntu.img' \
+      --image 'vendor_a=partitions/vendor.img' \
+      --output out/super.img
+  artifacts:
+    paths:
+      - out/boot.img
+      - out/super.img
+
+devel-bootloader-flashable-focal:
+  extends: devel-bootloader-flashable
+  needs: [ "devel-flashable-focal" ]
+  # TODO: the resulting image is too big for GitLab. Figure out how to
+  # make it possible to upload the artifact somehow.
+  when: manual
