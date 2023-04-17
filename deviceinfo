@@ -8,6 +8,7 @@ deviceinfo_kernel_defconfig="gki_defconfig gx4.config entry_level.config halium.
 deviceinfo_kernel_cmdline="bootopt=64S3,32N2,64N2 systempart=/dev/mapper/system"
 deviceinfo_kernel_clang_compile="true"
 deviceinfo_kernel_llvm_compile="true"
+deviceinfo_ramdisk_compression="lz4"
 deviceinfo_dtb="mediatek/mt6789.dtb"
 deviceinfo_flash_pagesize="4096"
 deviceinfo_flash_offset_base="0x0"
