@@ -11,6 +11,7 @@ variables:
 devel-bootloader-flashable:
   stage: deploy
   needs: [ "devel-flashable" ]
+  when: manual
   script: |
     set -e
 
