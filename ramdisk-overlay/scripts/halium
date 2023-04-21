@@ -536,14 +536,18 @@ mountroot() {
 		fi
 	fi
 
+	identify_file_layout
+
+	# Default to /dev/mapper/system if no image file is found
+	[ -z "$imagefile" ] && [ -z "$_syspart" ] && _syspart=/dev/mapper/system
+
 	# We need to add the slot suffix to $_syspart for A/B devices
-	if [ -n "$_syspart" ] && [ ! -e "$_syspart" ] && [ ! -z "$ab_slot_suffix" ]; then
+	if [ -n "$_syspart" ] && [ ! -e "$_syspart" ]; then
+		[ -z "$ab_slot_suffix" ] && ab_slot_suffix=_a
 		tell_kmsg "A/B slot system detected! Slot suffix is $ab_slot_suffix"
 		_syspart="${_syspart}${ab_slot_suffix}"
 		tell_kmsg "system partition is at $_syspart"
 	fi
-
-	identify_file_layout
 
 	# If both $imagefile and $_syspart are set, something is wrong. The strange
 	# output from this could be a clue in that situation.
