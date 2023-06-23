@@ -1,0 +1,3 @@
+  # libhybris
+  /{,android/}apex/com.android.i18n/lib{,64}/**     r,
+  /{,android/}apex/com.android.i18n/lib{,64}/**.so  m,
