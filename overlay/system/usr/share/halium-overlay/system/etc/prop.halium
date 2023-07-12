@@ -4,3 +4,5 @@ ro.product.manufacturer=Volla
 ro.product.vendor.manufacturer=Volla
 ro.product.model=Phone X23
 ro.product.vendor.model=Phone X23
+# Enable rear wide angle lens
+ro.odm.camera=1
