@@ -16,3 +16,4 @@ vidofnir:
   MirAndroidPlatformClientEglFlush:
     - all
   VibrateDurationExtraMs: 40
+  QtWebEngineNoAccelVideoDecoding: true
