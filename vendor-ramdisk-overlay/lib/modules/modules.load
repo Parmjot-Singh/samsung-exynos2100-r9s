@@ -157,3 +157,4 @@ st21nfc.ko
 leds-aw2016.ko
 leds_aw210xx.ko
 hardware_info.ko
+mt6358-accdet.ko
